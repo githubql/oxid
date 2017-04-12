@@ -6,6 +6,7 @@
  * Time: 14:53
  */
 
+/*class using PDO (PHP Data Object) stuff*/
 class database
 {
     public $db;

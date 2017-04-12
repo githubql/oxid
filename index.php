@@ -19,7 +19,6 @@ $createTables=false;
 
 /*load classes automatically*/
 spl_autoload_register(function ($class) { include 'php/classes/' . $class . '.class.php';});
-
 $obj_helper= new oxidian();
 
 /*setting some defaults within helper*/
@@ -31,12 +30,14 @@ $obj_helper->createTablesL1L2($createTables);
 /*getting all articles being in defined cetagory*/
 $query=$obj_helper->getQueryCategory($category);
 $result=$obj_helper->setQuery($query);
-$arrayObject=$result->fetchAll();
+$arrayObject=$result->fetchAll(PDO::FETCH_ASSOC);
 
 /*getting average price*/
 $query=$obj_helper->getQueryCategory($category,true);
 $result=$obj_helper->setQuery($query);
-$average=$obj_helper->getValue($result,'average');
+$resultAverage=$result->fetch();
+
+$average=$obj_helper->getValue($resultAverage,'average');
 
 /*prepare data for storage*/
 $data=new stdClass();
@@ -45,32 +46,7 @@ $data->average=$average;
 $data->data=$arrayObject;
 
 /*Displaying via echo*/
-$log_mode='echo';
-$destination=$obj_helper->getDestination($log_mode);
-$obj_logger=logFactory::createLogger($log_mode,$destination);
-$message=$obj_helper->getDataToLog($data,$log_mode);
-$obj_logger->log($message);
-
-/*Logging to database*/
-$log_mode='database';
-$destination=$obj_helper->getDestination($log_mode);
-$obj_logger=logFactory::createLogger($log_mode,$destination);
-$message=$obj_helper->getDataToLog($data,$log_mode);
-$obj_logger->log($message[0]);
-$insertId=$obj_logger->getLastInsertId();
-$query=str_replace('#INSERTID#',$insertId,$message[1]);
-$obj_logger->log($query);
-
-/*Logging to json file*/
-$log_mode='filejson';
-$destination=$obj_helper->getDestination($log_mode);
-$obj_logger=logFactory::createLogger($log_mode,$destination);
-$message=$obj_helper->getDataToLog($data,$log_mode);
-$obj_logger->log($message);
-
-/*Logging to csv file*/
-$log_mode='filecsv';
-$destination=$obj_helper->getDestination($log_mode);
-$obj_logger=logFactory::createLogger($log_mode,$destination);
-$message=$obj_helper->getDataToLog($data,$log_mode);
-$obj_logger->log($message,'csv');
+$obj_helper->loggData($data,'echo');
+$obj_helper->loggData($data,'filejson');
+$obj_helper->loggData($data,'filecsv');
+$obj_helper->loggData($data,'database');

@@ -36,6 +36,7 @@ class logFile implements log
         }
         else
         {
+            /*json is put into file as new line; better would be jsonifying all ...*/
             error_log($data."\n",3,$this->logfile);
         }
     }
