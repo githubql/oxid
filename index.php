@@ -7,10 +7,14 @@
  */
 
 /*SET DEFAULTS START*/
+$db_host='localhost';
+$db_database='cmsopencms';
+$db_user='cmsopencms';
+$db_password='cmsopencms';
 $category='Kites';
-$createTables=false;
 $logfilejson=__DIR__.'/logs/log.json';
 $logfilecsv=__DIR__.'/logs/log.csv';
+$createTables=false;
 /*SET DEFAULTS STOP*/
 
 /*load classes automatically*/
@@ -20,7 +24,7 @@ include 'php/oxidian.class.php';
 $obj_helper= new oxidian();
 
 /*setting some defaults within helper*/
-$obj_helper->initiateDatabase('localhost','cmsopencms','cmsopencms','cmsopencms');
+$obj_helper->initiateDatabase($db_host,$db_database,$db_user,$db_password);
 $obj_helper->set('filejson',$logfilejson);
 $obj_helper->set('filecsv',$logfilecsv);
 $obj_helper->createTablesL1L2($createTables);
