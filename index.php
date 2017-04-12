@@ -19,7 +19,7 @@ $createTables=false;
 
 /*load classes automatically*/
 spl_autoload_register(function ($class) { include 'php/classes/' . $class . '.class.php';});
-/*include helper class oxidian*/
+
 $obj_helper= new oxidian();
 
 /*setting some defaults within helper*/
